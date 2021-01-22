@@ -1,0 +1,40 @@
+{
+  "name": "playwright-har",
+  "version": "0.1.0",
+  "description": "Generate HAR files from Playwright test execution",
+  "main": "dist/playwright-har.js",
+  "scripts": {
+    "prebuild": "rimraf ./dist",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janzaremski/playwright-har.git"
+  },
+  "keywords": [
+    "playwright",
+    "har"
+  ],
+  "author": "Jan Zaremski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/janzaremski/playwright-har/issues"
+  },
+  "homepage": "https://github.com/janzaremski/playwright-har#readme",
+  "dependencies": {
+    "chrome-har": "^0.11.12",
+    "playwright-chromium": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.22",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}
