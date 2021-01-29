@@ -52,18 +52,22 @@ class CustomEnvironment extends PlaywrightEnvironment {
         super(config, context);
         this.playwrightHar;
     }
-    
-    async setup() {
-        await super.setup();
-        this.playwrightHar = new PlaywrightHar(this.global.page);
-        await this.playwrightHar.start();
-    }
 
     async handleTestEvent(event) {
+
+        if (event.name == 'test_start') {
+            if (this.global.browserName === 'chromium') {
+                this.playwrightHar = new PlaywrightHar(this.global.page);
+                await this.playwrightHar.start();
+            }
+        }
+
         if (event.name == 'test_done') {
-            const parentName = event.test.parent.name.replace(/\W/g, '-');
-            const specName = event.test.name.replace(/\W/g, '-');
-            await this.playwrightHar.stop(`./${parentName}_${specName}.har`);
+            if (this.global.browserName === 'chromium') {
+                const parentName = event.test.parent.name.replace(/\W/g, '-');
+                const specName = event.test.name.replace(/\W/g, '-');
+                await this.playwrightHar.stop(`./${parentName}_${specName}.har`);
+            }
         }
     }
 }
@@ -71,7 +75,7 @@ class CustomEnvironment extends PlaywrightEnvironment {
 module.exports = CustomEnvironment;
 ```
 
-This setup will create `PlaywrightHar` instance for each spec file, collect browser network traffic from test execution and save it in `.har` file with name corresponding to spec name.
+This setup will create `PlaywrightHar` instance for each `test` statement in `describe` statement in spec file. Browser network traffic will be collected from this step execution and save it in `.har` file with name corresponding to `describe` name followed by `test` name.
 
 ## Additional info
 
