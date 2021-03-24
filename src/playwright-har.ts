@@ -70,7 +70,6 @@ export class PlaywrightHar {
 
     async stop(path?: string) {
         await Promise.all(this.addResponseBodyPromises);
-        await this.client.detach();
         const harObject = harFromMessages(this.events, { includeTextFromResponseBody: true });
         this.events = [];
         this.addResponseBodyPromises = [];
