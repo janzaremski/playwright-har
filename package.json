@@ -1,6 +1,6 @@
 {
   "name": "playwright-har",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate HAR files from Playwright test execution",
   "main": "dist/playwright-har.js",
   "scripts": {
