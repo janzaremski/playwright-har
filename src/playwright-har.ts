@@ -1,7 +1,7 @@
 import { harFromMessages } from 'chrome-har';
 import { writeFileSync } from 'fs';
 import { CDPSession, Page } from 'playwright-chromium';
-import { PlaywrightHarConfig } from 'playwright-har-config';
+import { PlaywrightHarConfig } from './playwright-har-config';
 
 export class PlaywrightHar {
 
