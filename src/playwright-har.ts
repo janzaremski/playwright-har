@@ -9,7 +9,7 @@ export class PlaywrightHar {
     private client: CDPSession;
     private addResponseBodyPromises = [];
     private events = [];
-    private config = [];
+    private config: PlaywrightHarConfig;
 
     constructor(page: Page, config: PlaywrightHarConfig = null) {
         this.page = page;
