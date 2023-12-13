@@ -1,6 +1,7 @@
 import { harFromMessages } from 'chrome-har';
 import { writeFileSync } from 'fs';
 import { CDPSession, Page } from 'playwright-chromium';
+import { PlaywrightHarConfig } from 'playwright-har-config';
 
 export class PlaywrightHar {
 
@@ -8,9 +9,14 @@ export class PlaywrightHar {
     private client: CDPSession;
     private addResponseBodyPromises = [];
     private events = [];
+    private config: PlaywrightHarConfig;
 
-    constructor(page: Page) {
+    constructor(page: Page, config: PlaywrightHarConfig = null) {
         this.page = page;
+
+        if (config == null) {
+          this.config = new PlaywrightHarConfig();
+        }
     }
 
     async start() {
@@ -41,6 +47,10 @@ export class PlaywrightHar {
                 const harEvent = { method, params };
                 this.events.push(harEvent);
                 if (method === 'Network.responseReceived') {
+                    if (this.config.recordResponses === false) {
+                        return;
+                    }
+                    
                     const response = harEvent.params.response;
                     const requestId = harEvent.params.requestId;
                     // Response body is unavailable for redirects, no-content, image, audio and video responses
@@ -70,7 +80,7 @@ export class PlaywrightHar {
 
     async stop(path?: string) {
         await Promise.all(this.addResponseBodyPromises);
-        const harObject = harFromMessages(this.events, { includeTextFromResponseBody: true });
+        const harObject = harFromMessages(this.events, { includeTextFromResponseBody: this.config.recordResponses !== false });
         this.events = [];
         this.addResponseBodyPromises = [];
         if (path) {
